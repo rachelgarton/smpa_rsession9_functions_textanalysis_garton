@@ -1,4 +1,11 @@
-# An intro to text analysis
+---
+title: "Intro to Text Analysis"
+author: "Data Journalism Book"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+format:
+  html:
+    self-contained: true
+---
 
 Throughout this course, we've been focused on finding information in structured data. We've learned a lot of techniques to do that, and we've learned how the creative mixing and matching of those skills can find new insights.
 
@@ -6,7 +13,7 @@ What happens when the insights are in unstructured data? Like a block of text?
 
 Turning unstructured text into data to analyze is a whole course in and of itself -- and one worth taking if you've got the credit hours -- but some simple stuff is in the grasp of basic data analysis.
 
-To do this, we'll need a new library -- [tidytext](https://cran.r-project.org/web/packages/tidytext/vignettes/tidytext.html), which you can guess by the name plays very nicely with the tidyverse. So install it with `install.packages("tidytext")` and we'll get rolling.
+To do this, we'll need a new library -- [tidytext](https://cran.r-project.org/web/packages/tidytext/vignettes/tidytext.html), which you can guess by the name plays very nicely with the tidyverse. 
 
 ```{r}
 #| output: false
@@ -111,10 +118,18 @@ unique_words_2021 <- releases %>%
   select(text) %>%
   unnest_tokens(word, text)
 
+unique_words_2021
+
+```
+
+
+```{r}
 unique_words_2022 <- releases %>%
   filter(date >= '2022-01-01') %>%
   select(text) %>%
   unnest_tokens(word, text)
+
+unique_words_2022
 ```
 
 Then we can create top 10 lists for both of them and compare:
@@ -126,7 +141,10 @@ unique_words_2021 %>%
   tally(sort=TRUE) %>%
   mutate(percent = (n/sum(n))*100) %>%
   top_n(10)
+```
 
+
+```{r}
 unique_words_2022 %>%
   anti_join(stop_words) %>%
   group_by(word) %>%
@@ -194,16 +212,26 @@ Another popular use of text analysis is to measure the sentiment of a word - whe
 ```{r}
 bing <- get_sentiments("bing")
 
+head(bing)
+```
+
+
+```{r}
 bing_word_counts_2021 <- unique_words_2021 %>%
   inner_join(bing) %>%
   count(word, sentiment, sort = TRUE)
 
+head(bing_word_counts_2021)
+```
+
+
+```{r}
 bing_word_counts_2022 <- unique_words_2022 %>%
   inner_join(bing) %>%
   count(word, sentiment, sort = TRUE)
 
-head(bing_word_counts_2021)
 head(bing_word_counts_2022)
 ```
+
 
 Gauging the sentiment of a word can be heavily dependent on the context, and as with other types of text analysis sometimes larger patterns are more meaningful than individual results. But the potential with text analysis is vast: knowing what words and phrases that public officials employ can be a way to evaluate their priorities, cohesiveness and tactics for persuading voters and their colleagues. And those words and phrases are data.
