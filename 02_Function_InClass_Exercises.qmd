@@ -1,6 +1,6 @@
 ---
 title: "R In-Class Exercise - Functions"
-author: "Your Name Here"
+author: "Rachel Garton"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 format:
   html:
@@ -26,7 +26,11 @@ options(tigris_class = "sf")
 1) Create a function that will return the sum of 2 numbers.
 
 ```{r}
+addtwonumbers <- function(firstnumber, secondhumber)
 
+firstnumber <- 1
+
+secondnumber <-41
 
 
 
